@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<script src="javascript.js"></script>
+
+
+<style>
+  .flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: rgb(254, 255, 255);
+    height: 100%;
+    justify-content: center;
+  }
+
+  .flex-container>div {
+    background-color: #f1f1f1;
+    max-width: 200px;
+    margin: 10px;
+    text-align: center;
+    line-height: 25px;
+    font-size: 10px;
+
+  }
+
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    width: 40%;
+  }
+
+  .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  .container {
+    padding: 2px 16px;
+  }
+
+  .imgpokemon {
+    width: 80%;
+
+  }
+
+  .specs {
+    font-size: medium;
+  }
+
+  .header{
+    text-align: center;
+    font-size: 30px;
+    border-bottom: 2px solid black;
+  }
+</style>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body onload="getText()">
+
+<div class="header" id="test">POKEMON</div>
+
+  <div class="flex-container" id="cardContainer">
+    <!-- dynamic card insertion -->
+
+    <!-- <div class="container">
+      <h1><b>${item.name}</b></h1>
+      <img class="imgpokemon" src=${moreInfo.sprites.front_default}> 
+      <p class="specs">Weight :${moreInfo.weight}</p>
+      <p class="specs">base_exp :${moreInfo.base_experience}</p>
+      <p class="specs">hp : ${moreInfo.stats[0].base_stat}</p>
+    </div> -->
+  </div>
+
+</body>
+
+
+
+</html>

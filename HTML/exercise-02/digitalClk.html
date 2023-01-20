@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<style>
+    .digitalClk{
+        position: absolute;
+        left:40%;
+        top:40%;
+        font-size: 100px;
+        font-weight: 20px;
+        transform-origin: 50% 50%;
+        border: 2px solid black;
+        border-radius: 5px;
+        padding: 20px;
+        box-sizing: border-box;
+        background-color: antiquewhite;  
+      
+
+    }
+</style>
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body onload="startTime()">
+    
+    <div id="txt" class="digitalClk">
+      
+    </div>
+
+    <script>
+        function startTime() {
+            const today = new Date();
+            let h = today.getHours();
+            let m = today.getMinutes();
+            let s = today.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('txt').innerHTML = h + ":" + m + ":" + s;
+            setInterval(startTime, 1000);
+        }
+
+        function checkTime(i) {
+            if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
+            return i;
+        }
+    </script>
+</body>
+
+</html>
