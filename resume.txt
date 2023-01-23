@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 firstname- Leon
 lastname- Fernandes
 education : MCA
+=======
+leon
+
+education : MCA + BSc
+>>>>>>> f36c119 (updated resume_info.txt)
