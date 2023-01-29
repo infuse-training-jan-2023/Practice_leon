@@ -1,0 +1,16 @@
+pipeline {
+    agent any 
+    stages {
+        stage('Version') { 
+            steps {
+                sh 'ruby --version'
+            }
+        }
+
+        stage('Run') { 
+            steps {
+                 sh 'ruby exp1Test.rb'
+            }
+        }
+    }
+}
