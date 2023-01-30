@@ -1,15 +1,17 @@
 pipeline {
     agent any 
     stages {
-        stage('Version') { 
+        stage('Git setup') { 
             steps {
-                bat '''ruby --version'''
+                git branch: 'jenkins/ruby',url:'${GIT_URL}'
+                echo "connect to repo"
             }
         }
 
         stage('Run') { 
             steps {
                  bat '''ruby exp1Test.rb'''
+                 echo "run script"
             }
         }
     }
