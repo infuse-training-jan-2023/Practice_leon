@@ -6,7 +6,8 @@ class Sokoglam
     attr_accessor :test
 
     def initialize()
-        driver_path="frameWork\\drivers\\chromedriver_win32\\chromedriver.exe"
+        #driver_path="frameWork\\drivers\\chromedriver_win32\\chromedriver.exe"
+        driver_path="/opt/chromedriver-109.0.5414.74/chromedriver"
         @test = WebTesterFramework.new("Chrome",driver_path)
     end
 
@@ -14,6 +15,7 @@ class Sokoglam
         url ="https://sokoglam.com/"
         test.navigate_to(url)
         test.maximize_window
+        puts "launched url"
     end
 
     def sign_in()
@@ -29,10 +31,17 @@ class Sokoglam
         test.set_text(username_text_field , username)
         test.set_text(password_text_field, pass)
         test.perform_click(submit_btn)
+        sleep(10)
+        puts "done with sign in"
+        if test.is_displayed({:id => "ltkpopup-content"})
+            test.perform_click({:xpath => '//*[@id="ltkpopup-close-button"]/a'})
+        end
+
+
     end
 
     def search_item()
-        search_icon ={:class => "global-header__right--search"}
+        search_icon ={:xpath => '//*[@id="shopify-section-site-nav"]/nav/div/div[3]/div[1]/img'}
         searchBar ={:id => "search-value"}
         search_text = "youthforia"
 
@@ -40,20 +49,26 @@ class Sokoglam
         sleep(1)
         test.set_text(searchBar , search_text)
         test.send_key(:enter)
+
+        puts "search item"
     end
 
     def add_to_wishlist( wish_list_xpath)    
         test.perform_click(wish_list_xpath)
         sleep(3)
+
+        puts "add to wish list"
     end
 
     def scroll(offset , iter , delay)
         test.scroll_window(offset , iter , delay)
+        puts "scroll fun"
     end
 
 
     def select_nav_tab(tab)
         test.perform_click(tab)
+        puts "seclect tab"
     end
 
 
@@ -61,12 +76,14 @@ class Sokoglam
         right_slider={:xpath =>"//*[@id='slider-range']/span[2]"}
         test.drag_and_drop(right_slider , -100 , 230)
         sleep(2)
+        puts "adjust slider"
     end
 
 
     def view_product(element)
         test.perform_click(element)
         sleep(3)
+        puts " view product"
     end
 
 
@@ -76,10 +93,13 @@ class Sokoglam
         test.perform_click({:xpath =>'/html/body/section[1]/ul/li/div[2]/a[2]'})
         sleep(2)
         test.perform_click({:xpath=>'/html/body/section[1]/div/div/button'})
+
+        puts "add to cart"
     end
 
     def exit 
         test.quit
+        puts "exit"
     end
     
 end
