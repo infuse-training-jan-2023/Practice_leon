@@ -6,22 +6,22 @@ class Maximize_window
 
     def initialize(driver_path)
         Selenium::WebDriver::Chrome::Service.driver_path = driver_path
-        @wait = Selenium::WebDriver::Wait.new(:timeout=>10)
         @driver =Selenium::WebDriver.for :chrome
       
     end
 
     def open_url(url)
          driver.get(url) 
-         wait.until{driver.manage.window.maximize}
+         driver.manage.window.maximize
          sleep(5)       
     end
 end
 
 
+url="https://www.reliancedigital.in/"
 
-driver_path="drivers\\chromedriver_win32\\chromedriver.exe"
+driver_path="selenium/drivers/chromedriver_win32/chromedriver.exe"  
 exp1 =Maximize_window.new(driver_path)
-exp1.open_url("https://www.reliancedigital.in/")
+exp1.open_url(url)
 
 
