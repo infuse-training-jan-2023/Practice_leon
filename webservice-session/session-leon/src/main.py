@@ -2,6 +2,7 @@ from flask import Flask , Response , request
 from item_actions import ItemActions
 from email_validator import EmailValidator
 from password_validator import PasswordValidator
+from todos_api import Todos_api
 import json
 
 
@@ -12,9 +13,9 @@ item_actions = ItemActions()
 def welcome():
     return "hello world"
 
-@app.route('/item/<int:num>',methods = ['GET'])
-def item(num):
-    return str(num*num)
+# @app.route('/item/<int:num>',methods = ['GET'])
+# def item(num):
+#     return str(num*num)
 
 
 @app.route('/items', methods = ['GET'])
@@ -22,6 +23,16 @@ def get_all_items():
   items = item_actions.get_all_items()
   print(items)
   return Response(json.dumps(items), mimetype='application/json', status=200)
+
+@app.route('/item/<int:id>', methods = ['DELETE'])
+def delete_item(id):
+  item = item_actions.delete_item(id)
+  return Response(item, mimetype='application/json', status=201)
+
+@app.route('/items/<int:id>', methods = ['GET'])
+def get_item(id):
+  item = item_actions.get_item(id)
+  return Response(json.dumps(item), mimetype='application/json', status=201)
 
 
 # create an api to validate email
@@ -46,6 +57,22 @@ def validate_password():
   if password_status:
     return Response("valid", status=200)
   return Response("invalid", status=200)
+
+@app.route('/todos/<int:index>',methods = ['GET'])
+def get_todos(index):
+    todo =Todos_api
+
+    return  todo.get_todos(index)
+
+@app.route('/items/<int:index>',methods = ['PUT'])
+def update_item(index):
+    request_data = request.get_json()
+    item = request_data['item']
+    status = request_data['status']
+    reminder = request_data['item']
+    added_item = item_actions.update_item(item, status ,reminder)
+
+    return   added_item
 
 # create an api to add a new item
 @app.route('/additem', methods = ['POST'])

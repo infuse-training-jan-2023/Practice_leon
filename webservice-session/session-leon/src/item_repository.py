@@ -10,12 +10,23 @@ class ItemRepository:
         return sqlite3.connect(ItemRepository.DBPATH)
 
     @staticmethod
-    def get_all_items():
+    def get_item(index):
         try:
             conn = ItemRepository.connect_db()
             c = conn.cursor()
-            rows = c.execute('select * from items')
-            return rows
+            row = c.execute('select * from items where id=?',(index,))
+            return row
+        except Exception as e:
+            raise Exception('Error: ', e)
+        
+    @staticmethod
+    def delete_item(index):
+        try:
+            conn = ItemRepository.connect_db()
+            c = conn.cursor()
+            c.execute('DELETE FROM items where id=?',(index,))
+            conn.commit()
+            return "deleted item"
         except Exception as e:
             raise Exception('Error: ', e)
 
