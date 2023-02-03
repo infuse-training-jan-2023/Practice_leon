@@ -1,14 +1,12 @@
 require 'selenium-webdriver'
 
-class Get_title
+class PageTitle
 
     attr_accessor :driver , :wait
 
     def initialize(driver_path)
         Selenium::WebDriver::Chrome::Service.driver_path = driver_path
-        @wait = Selenium::WebDriver::Wait.new(:timeout=>10)
         @driver =Selenium::WebDriver.for :chrome
-      
     end
 
     def open_url(url)
@@ -18,10 +16,10 @@ class Get_title
     end
 end
 
-
+url="https://www.reliancedigital.in/"
 
 driver_path="drivers\\chromedriver_win32\\chromedriver.exe"
-exp1 =Get_title.new(driver_path)
-exp1.open_url("https://www.reliancedigital.in/")
+exp1 =PageTitle.new(driver_path)
+exp1.open_url(url)
 
 

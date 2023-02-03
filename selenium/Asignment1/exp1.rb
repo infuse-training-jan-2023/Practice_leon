@@ -1,6 +1,6 @@
 require 'selenium-webdriver'
 
-class Maximize_window 
+class BrowserWindow
 
     attr_accessor :driver , :wait
 
@@ -21,7 +21,7 @@ end
 url="https://www.reliancedigital.in/"
 
 driver_path="selenium/drivers/chromedriver_win32/chromedriver.exe"  
-exp1 =Maximize_window.new(driver_path)
+exp1 =BrowserWindow.new(driver_path)
 exp1.open_url(url)
 
 

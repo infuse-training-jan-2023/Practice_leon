@@ -6,22 +6,23 @@ class Table
 
     def initialize(driver_path)
         Selenium::WebDriver::Chrome::Service.driver_path = driver_path
-        @wait = Selenium::WebDriver::Wait.new(:timeout=>10)
-        @driver =Selenium::WebDriver.for :chrome
-      
+        @driver =Selenium::WebDriver.for :chrome  
     end
 
     def perfom_action(url)
         driver.get(url) 
         sleep(1)
-        result=  driver.find_element(:css, "table#countries tr:first-child").text
+        result=  driver.find_element(:tag_name, "tr").text
         sleep(2)  
-        return result
+        puts result
+        return 
     end   
 end
 
-driver_path="drivers\\chromedriver_win32\\chromedriver.exe"
+url = "https://cosmocode.io/automation-practice-webtable/"
+
+driver_path="selenium/drivers/chromedriver_win32/chromedriver.exe"
 exp1 =Table.new(driver_path)
-puts "headers =>  " +exp1.perfom_action("https://cosmocode.io/automation-practice-webtable/")
+exp1.perfom_action(url)
 
 

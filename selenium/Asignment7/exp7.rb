@@ -6,23 +6,24 @@ class DropDown
 
     def initialize(driver_path)
         Selenium::WebDriver::Chrome::Service.driver_path = driver_path
-        @wait = Selenium::WebDriver::Wait.new(:timeout=>10)
         @driver =Selenium::WebDriver.for :chrome
-      
     end
 
     def perfom_action(url)
+        drop_down_element ={:name => "dropdown"}
         driver.get(url) 
         sleep(1)
-        driver.find_element(:css, "select option:nth-child(5)").click
-        return driver.find_element(:css, "select option:nth-child(5)").text 
+        select_element = driver.find_element(drop_down_element)
+        select = Selenium::WebDriver::Support::Select.new(select_element)
+        select.select_by(:index,3)
+        return select.selected_options[0].text
     end   
 end
 
+url="https://testpages.herokuapp.com/styled/basic-html-form-test.html"
 
-
-driver_path="drivers\\chromedriver_win32\\chromedriver.exe"
+driver_path="selenium/drivers\\chromedriver_win32\\chromedriver.exe"
 exp1 =DropDown.new(driver_path)
-puts "value=> "+ exp1.perfom_action("https://testpages.herokuapp.com/styled/basic-html-form-test.html").to_s
+puts "value=> "+ exp1.perfom_action(url)
 
 

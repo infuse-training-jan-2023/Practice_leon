@@ -1,32 +1,30 @@
 require 'selenium-webdriver'
 
-class Click_element
+class ClickElement
 
     attr_accessor :driver , :wait
 
     def initialize(driver_path)
         Selenium::WebDriver::Chrome::Service.driver_path = driver_path
-        @wait = Selenium::WebDriver::Wait.new(:timeout=>10)
         @driver =Selenium::WebDriver.for :chrome
-      
     end
 
     def perfom_action(url)
+        search_bar={:name =>"q"}
+        search_text="amd ryzen 7000 series"
         driver.get(url) 
         sleep(1)
-        driver.find_element(:name, "q").click
-        puts "clicked search box"
-        driver.find_element(:name, "q").send_keys("amd ryzen 7000 series")
-        driver.find_element(:name, "q").send_key(:enter)
-        puts "clicked radio button"
+        driver.find_element(search_bar).click
+        driver.find_element(search_bar).send_keys(search_text)
+        driver.find_element(search_bar).send_key(:enter)
         sleep(2)   
     end
 end
 
+url="https://www.google.com"
 
-
-driver_path="drivers\\chromedriver_win32\\chromedriver.exe"
-exp1 =Click_element.new(driver_path)
-exp1.perfom_action("https://www.google.com")
+driver_path="selenium\\drivers\\chromedriver_win32\\chromedriver.exe"
+exp1 =ClickElement.new(driver_path)
+exp1.perfom_action(url)
 
 
