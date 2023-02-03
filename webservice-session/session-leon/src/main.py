@@ -1,6 +1,7 @@
 from flask import Flask , Response , request
 from item_actions import ItemActions
 from email_validator import EmailValidator
+from password_validator import PasswordValidator
 import json
 
 
@@ -32,7 +33,19 @@ def validate_email():
   email_status = email_validator.validate(email)
   if email_status:
     return Response("valid", status=200)
-  return Response("invalid", status=201)
+  return Response("invalid", status=200)
+
+    
+# create an api to validate password
+@app.route('/password', methods = ['POST'])
+def validate_password():
+  password_validator =PasswordValidator
+  request_data = request.get_json()
+  password = request_data['pass']
+  password_status = password_validator.validate(password)
+  if password_status:
+    return Response("valid", status=200)
+  return Response("invalid", status=200)
 
 # create an api to add a new item
 @app.route('/additem', methods = ['POST'])
