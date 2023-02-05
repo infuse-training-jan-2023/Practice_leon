@@ -24,7 +24,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Digital clock</title>
 </head>
 
 <body onload="startTime()">
@@ -36,18 +36,18 @@
     <script>
         function startTime() {
             const today = new Date();
-            let h = today.getHours();
-            let m = today.getMinutes();
-            let s = today.getSeconds();
-            m = checkTime(m);
-            s = checkTime(s);
-            document.getElementById('txt').innerHTML = h + ":" + m + ":" + s;
+            let hours = today.getHours();
+            let minutes = today.getMinutes();
+            let seconds = today.getSeconds();
+            minutes = formateTimeDigit(minutes);
+            seconds = formateTimeDigit(seconds);
+            document.getElementById('txt').innerHTML = hours + ":" + minutes + ":" + seconds;
             setInterval(startTime, 1000);
         }
 
-        function checkTime(i) {
-            if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
-            return i;
+        function formateTimeDigit(value) {
+            if (value < 10) { value = "0" + value };  // add zero in front of numbers < 10
+            return value;
         }
     </script>
 </body>

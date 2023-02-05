@@ -63,7 +63,14 @@ ul {
   
 }
 
-li{padding: 10px;}
+li{
+  text-transform:capitalize;
+  padding: 10px;
+}
+
+li:hover {
+  background-color: rgb(233, 233, 230);
+}
 
 
 .test-data{
