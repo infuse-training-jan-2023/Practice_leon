@@ -1,0 +1,25 @@
+pipeline {
+    agent any 
+    stages {
+        stage('Build') { 
+            steps {
+                git branch: 'jenkins/ruby-1' , url:'https://github.com/infuse-training-jan-2023/Practice_leon.git'
+        
+                bat '''ruby unitTestExp3.rb'''
+                
+                echo "run test"
+            }
+        }
+        
+        stage('merge branch') {
+            steps {
+                  git branch: 'jenkins/ruby' , url:'https://github.com/infuse-training-jan-2023/Practice_leon.git'
+                  
+                  bat'''git merge jenkins/ruby-1'''
+                  
+                  echo "merge  state"
+            }
+        }
+       
+    }
+}
