@@ -1,4 +1,6 @@
 from item_repository import ItemRepository
+import json
+import csv
 
 class ItemActions:
     def __init__(self) -> None:
@@ -56,11 +58,54 @@ class ItemActions:
             return {}
         
 
-    def update_item(self, item , status , reminder):
+    def update_item(self, index ,item , status , reminder):
         try:
-            data = self.item_repo.add_item(item,status, reminder)
+            data = self.item_repo.update_item(index ,item,status, reminder)
             return data
         except Exception as e:
             print(e)
             return {}
+        
+
+    
+    def add_user(self, request_data):
+        try:
+            item = self.item_repo.add_user(request_data )
+            return item
+        except Exception as e:
+            print(e)
+            return {}
+        
+    def create_csv(self):
+        try:
+            rows = self.item_repo.get_all_items()
+
+            data = []
+            for item in rows:
+                data.append({
+                'id': item[0],
+                'item': item[1],
+                'status': item[2],
+                'reminder': item[3],
+                })
+           
+            data_file = open('data_file.csv', 'w')
+            csv_writer = csv.writer(data_file)
+            count = 0
+
+            for item in data:
+                if count == 0:
+                    header = item.keys()
+                    csv_writer.writerow(header)
+                    count += 1
+
+                csv_writer.writerow(item.values())
+
+            data_file.close()
+            return "csv file created"
+        except Exception as e:
+            print(e)
+            return {}
+        
+        
         
