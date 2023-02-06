@@ -1,4 +1,4 @@
 todo.db
 env
-src/__pycache__
 data_file.csv
+*\__pycache__

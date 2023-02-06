@@ -1,6 +1,5 @@
 import sqlite3
 
-
 class ItemRepository:
 
     DBPATH = './todo.db'
@@ -57,7 +56,6 @@ class ItemRepository:
         except Exception as e:
             raise Exception('Error: ', e)
         
-
     @staticmethod
     def update_item(index ,item,status, reminder):
         try:
@@ -65,9 +63,7 @@ class ItemRepository:
             c = conn.cursor()
             c.execute('update items set item=?, status=?, reminder=? where id=?', (item, status, reminder , index))
             conn.commit()
-            return "updated"
-               
-                
+            return "updated"         
         except Exception as e:
             raise Exception('Error: ', e)
     
@@ -79,7 +75,6 @@ class ItemRepository:
             name = request_data['name']
             address = request_data['address']
             phone = request_data['phone']
-
             insert_cursor = c.execute('insert into user(name, address, phone) values(?,?,?)', (name, address, phone))
             conn.commit()
             return {

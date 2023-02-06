@@ -6,7 +6,6 @@ class ItemActions:
     def __init__(self) -> None:
         self.item_repo = ItemRepository()
 
-
     def delete_item(self ,index):
         try:
             items = self.item_repo.delete_item(index)
@@ -14,7 +13,6 @@ class ItemActions:
         except Exception as e:
             print(e)
             return {}
-
 
     def get_item(self , index):
         try:
@@ -57,7 +55,6 @@ class ItemActions:
             print(e)
             return {}
         
-
     def update_item(self, index ,item , status , reminder):
         try:
             data = self.item_repo.update_item(index ,item,status, reminder)
@@ -65,9 +62,7 @@ class ItemActions:
         except Exception as e:
             print(e)
             return {}
-        
-
-    
+           
     def add_user(self, request_data):
         try:
             item = self.item_repo.add_user(request_data )

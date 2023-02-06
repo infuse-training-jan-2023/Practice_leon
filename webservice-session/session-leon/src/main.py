@@ -5,18 +5,12 @@ from password_validator import PasswordValidator
 from todos_api import Todos_api
 import json
 
-
 app = Flask(__name__)
 item_actions = ItemActions()
 
 @app.route('/',methods = ['GET'])
 def welcome():
-    return "hello world"
-
-# @app.route('/item/<int:num>',methods = ['GET'])
-# def item(num):
-#     return str(num*num)
-
+    return "welcome to Todos api"
 
 @app.route('/items', methods = ['GET'])
 def get_all_items():
@@ -34,7 +28,6 @@ def get_item(id):
   item = item_actions.get_item(id)
   return Response(json.dumps(item), mimetype='application/json', status=201)
 
-
 # create an api to validate email
 @app.route('/Email', methods = ['POST'])
 def validate_email():
@@ -46,7 +39,6 @@ def validate_email():
     return Response("valid", status=200)
   return Response("invalid", status=200)
 
-    
 # create an api to validate password
 @app.route('/password', methods = ['POST'])
 def validate_password():
@@ -58,12 +50,6 @@ def validate_password():
     return Response("valid", status=200)
   return Response("invalid", status=200)
 
-@app.route('/todos/<int:index>',methods = ['GET'])
-def get_todos(index):
-    todo =Todos_api
-
-    return  todo.get_todos(index)
-
 @app.route('/items',methods = ['PUT'])
 def update_item():
     request_data = request.get_json()
@@ -71,7 +57,6 @@ def update_item():
     item = request_data['item']
     status = request_data['status']
     reminder = request_data['reminder']
-    #added_item = item_actions.update_item(index, item, status ,reminder)
     added_item = item_actions.update_item(index, item, status ,reminder)
     return   added_item
 
@@ -95,7 +80,6 @@ def add_new_user():
     return Response("{'error': 'Erro addding the user'}", mimetype='application/json', status=500)
   return Response(json.dumps(added_user), mimetype='application/json', status=201)
 
-
 @app.route('/to_csv', methods = ['GET'])
 def create_csv():
   msg = item_actions.create_csv()
@@ -103,8 +87,10 @@ def create_csv():
     return Response("{'error': 'Erro addding the item'}", mimetype='application/json', status=500)
   return Response(msg, mimetype='application/json', status=201)
 
-
-
+@app.route('/todos/<id>', methods = ['GET'])
+def get_todos(id):
+  res = Todos_api.get_todos(id)
+  return res
 
 if __name__=='__main__':
     app.run(debug =True, port = 5000, host ='0.0.0.0')
