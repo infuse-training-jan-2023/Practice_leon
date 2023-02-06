@@ -1,6 +1,9 @@
 
 import requests
 
+class InvalidIndex(Exception):
+    pass
+
 class Todos_api():
     def get_todos(index):
         try:
@@ -8,8 +11,8 @@ class Todos_api():
           if index in range(1 ,201):
             res = requests.get(f"https://jsonplaceholder.typicode.com/todos/{index}")
           else:
-            return "index out of range"
+           raise InvalidIndex("index out of range")
           return res.text
         except:
-          return "type error: not a int"
+          raise TypeError("type error: not a int")
           

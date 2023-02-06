@@ -26,7 +26,7 @@ class ItemRepository:
             c = conn.cursor()
             c.execute('DELETE FROM items where id=?',(index,))
             conn.commit()
-            return "deleted item"
+            return {"msg":"deleted item"}
         except Exception as e:
             raise Exception('Error: ', e)
 
@@ -48,7 +48,7 @@ class ItemRepository:
             insert_cursor = c.execute('insert into items(item, status, reminder) values(?,?,?)', (item, ItemRepository.NOT_STARTED, reminder))
             conn.commit()
             return {
-                'id': insert_cursor.lastrowid,
+                'id':  insert_cursor.lastrowid,
                 'item': item,
                 'status': ItemRepository.NOT_STARTED,
                 'reminder': reminder
@@ -63,7 +63,9 @@ class ItemRepository:
             c = conn.cursor()
             c.execute('update items set item=?, status=?, reminder=? where id=?', (item, status, reminder , index))
             conn.commit()
-            return "updated"         
+            return {
+                'msg' : "updated",
+                }         
         except Exception as e:
             raise Exception('Error: ', e)
     
