@@ -1,10 +1,15 @@
 pipeline {
-    agent any 
+    agent jenkins-slave-Leon
     stages {
+        stage('Compile') { 
+            steps {
+                 bat '''javac DuplicateInString.java'''
+                    
+            }
+        }
         stage('Build') { 
             steps {
-                 bat '''javac DuplicateInString.java
-                    java DuplicateInString'''
+                 bat '''java DuplicateInString'''
             }
         }
     }
