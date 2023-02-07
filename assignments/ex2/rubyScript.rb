@@ -3,8 +3,6 @@ require 'rubygems'
 require 'json'
 
 
-
-
 class JsonFormater
 
     def initialize(string)
@@ -14,11 +12,7 @@ class JsonFormater
     def print_Json_str()
     
         puts @jsonData
-
-
     end
-
-
 end
 
 
@@ -32,4 +26,5 @@ formater = JsonFormater.new(jsonString)
 
 formater.print_Json_str
 
-
+puts ENV["arg1"]
+puts ENV["arg2"]
