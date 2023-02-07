@@ -7,12 +7,9 @@ class InvalidPassword(Exception):
 class PasswordValidator():
     def validate(password):
         Password_regex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
-        try:
-            if re.search(Password_regex , password):
-                return True
-            else:
-                return False
-        except:
-            raise InvalidPassword("password has to be a string")
+        if re.search(Password_regex , password):
+            return True
+        return False
+    
 
 

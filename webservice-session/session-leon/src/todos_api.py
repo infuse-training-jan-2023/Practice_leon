@@ -11,8 +11,8 @@ class Todos_api():
           if index in range(1 ,201):
             res = requests.get(f"https://jsonplaceholder.typicode.com/todos/{index}")
           else:
-           raise InvalidIndex("index out of range")
+            return "index out of range"
           return res.text
         except:
-          raise TypeError("type error: not a int")
+          return "type error: not a int"
           

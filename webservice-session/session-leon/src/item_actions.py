@@ -1,14 +1,18 @@
 from item_repository import ItemRepository
+from user_repository import UserRepository
 import json
 import csv
 
 class ItemActions:
     def __init__(self) -> None:
         self.item_repo = ItemRepository()
+        self.user_repo = UserRepository()
 
-    def delete_item(self ,index):
+    def delete_item(self ,id):
         try:
-            items = self.item_repo.delete_item(index)
+            if( self.get_item(id)==None):
+                return {"msg" : "item not found"}
+            items = self.item_repo.delete_item(id)
             return items
         except Exception as e:
             print(e)
@@ -17,7 +21,6 @@ class ItemActions:
     def get_item(self , index):
         try:
             items = self.item_repo.get_item(index)
-            print(items)
             res = []
             for item in items:
                 res.append({
@@ -55,9 +58,11 @@ class ItemActions:
             print(e)
             return {}
         
-    def update_item(self, index ,item , status , reminder):
+    def update_item(self, id, request_data):
         try:
-            data = self.item_repo.update_item(index ,item,status, reminder)
+            if( self.get_item(id)==None):
+                return {"msg" : "item not found"}
+            data = self.item_repo.update_item(id ,request_data)
             return data
         except Exception as e:
             print(e)
@@ -65,7 +70,7 @@ class ItemActions:
            
     def add_user(self, request_data):
         try:
-            item = self.item_repo.add_user(request_data )
+            item = self.user_repo.add_user(request_data )
             return item
         except Exception as e:
             print(e)
@@ -84,19 +89,20 @@ class ItemActions:
                 'reminder': item[3],
                 })
            
-            data_file = open('data_file.csv', 'w')
-            csv_writer = csv.writer(data_file)
-            count = 0
+            with open("data_file.csv") as data_file:
+            #data_file = open('data_file.csv', 'w')
+                csv_writer = csv.writer(data_file)
+                count = 0
 
-            for item in data:
-                if count == 0:
-                    header = item.keys()
-                    csv_writer.writerow(header)
-                    count += 1
+                for item in data:
+                    if count == 0:
+                        header = item.keys()
+                        csv_writer.writerow(header)
+                        count += 1
 
-                csv_writer.writerow(item.values())
+                    csv_writer.writerow(item.values())
 
-            data_file.close()
+            #data_file.close()
             return "csv file created"
         except Exception as e:
             print(e)
