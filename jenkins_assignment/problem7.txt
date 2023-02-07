@@ -4,11 +4,17 @@ pipeline {
         stage('Build') { 
             steps {
                 git branch: 'jenkins/ruby-1' , url:'https://github.com/infuse-training-jan-2023/Practice_leon.git'
-        
+         
+            }
+        }
+
+        stage('test') {
+            steps{ 
                 bat '''ruby unitTestExp3.rb'''
-                
                 echo "run test"
             }
+
+
         }
         
         stage('merge branch') {

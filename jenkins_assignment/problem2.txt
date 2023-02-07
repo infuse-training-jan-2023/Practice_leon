@@ -1,23 +1,4 @@
-pipeline {
-    agent any 
-    stages {
-        stage('create') { 
-            steps {
-                 bat '''mkdir C:\\Users\\Leon\\Desktop\\Jenkins-node\\newdir'''
-                 
-            }
-        }
-        stage('create_file') { 
-            steps {
-                
-                 bat '''cd C:\\Users\\Leon\\Desktop\\Jenkins-node\\newdir
-                 echo hello world > test.txt
-                 '''
-                 
-            }
-        }
-        
-       
-        }
-    }
 
+mkdir C:\\Users\\Leon\\Desktop\\Jenkins-node\\newdir
+cd C:\\Users\\Leon\\Desktop\\Jenkins-node\\newdir
+echo hello world > test.txt

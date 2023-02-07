@@ -8,7 +8,7 @@ pipeline {
             }
         }
 
-        stage('Run') { 
+        stage('Test') { 
             steps {
                  bat '''ruby exp1Test.rb'''
                  echo "run script"
