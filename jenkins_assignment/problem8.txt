@@ -6,11 +6,11 @@ pipeline {
             steps {
                 script {
                         def jsonData = new JsonSlurper();
-                        def getTodos = new URL("https://jsonplaceholder.typicode.com/todos").openConnection();
-                        def getResCode = getTodos.getResponseCode();
+                        def todos = new URL("https://jsonplaceholder.typicode.com/todos").openConnection();
+                        def ResponseCodeValue = todos.getResponseCode();
                         
-                        if (getResCode.equals(200)){  
-                            data = getTodos.getInputStream().getText()
+                        if (ResponseCodeValue.equals(200)){  
+                            data = todos.getInputStream().getText()
                             todosJsonData = jsonData.parseText(data)   
                         
                         for( item in todosJsonData){
