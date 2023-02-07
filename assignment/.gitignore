@@ -6,3 +6,7 @@ problem3/__pycache__
 problem3/.pytest_cache
 problem4/__pycache__
 problem4/.pytest_cache
+
+*/.pytest_cache
+*/__pycache__
+*/.coverage

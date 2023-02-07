@@ -1,5 +1,4 @@
-from prob4 import FindSubstrSum
-import pytest
+from problem4.prob4 import FindSubstrSum
 
 def test_sub_str_sum():
     obj1=FindSubstrSum()

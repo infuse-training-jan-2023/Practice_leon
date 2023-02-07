@@ -1,5 +1,5 @@
 
-class CustomError(Exception):
+class OutOfbound(Exception):
     pass
 
 class SportsArray:
@@ -8,5 +8,5 @@ class SportsArray:
     if  skipLen <=len(sports_array) and skipLen >=0 :
         return sports_array[skipLen : len(sports_array)]  
     else:
-        raise CustomError("index out of bounds or invalid")
+        raise OutOfbound("index out of bounds or invalid")
     
