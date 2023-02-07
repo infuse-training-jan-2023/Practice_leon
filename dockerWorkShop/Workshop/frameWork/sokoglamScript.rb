@@ -1,7 +1,7 @@
 require_relative "WebTesterFramework"
 
 
-class Sokoglam
+class AutomateSokoglam
 
     attr_accessor :test
 
@@ -114,7 +114,7 @@ product1={:xpath => '//*[@id="body_main"]/div[2]/div/div[1]/div[1]/div[1]/div/a'
 
 
 
-sokoglam = Sokoglam.new
+sokoglam = AutomateSokoglam.new
 
 sokoglam.launch_url()
 
