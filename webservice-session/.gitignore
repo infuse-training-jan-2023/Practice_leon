@@ -1,0 +1,5 @@
+todo.db
+env
+data_file.csv
+*\__pycache__
+*\.pytest_cache
