@@ -1,0 +1,138 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  This CloudFormation template creates simple Lambda function,
+  which stores lambda invocation log in s3 bucket.  
+
+
+Parameters:
+  BucketName:  
+    Type: String 
+    Default: "my-lambda-logbucket" 
+
+  LambdaFuncName:
+    Type: String
+    Default: Lambda_api-lambda-db
+
+  APIName:
+    Type: String
+    Default: API_api-lambda-db
+  EnvironmentName:
+    Type: String
+    Default: Prod
+
+
+Resources:
+            
+  MainBucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: !Ref BucketName
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+    
+  LambdaFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+              - lambda.amazonaws.com
+          Action:
+            - sts:AssumeRole
+      Path: "/"
+      Policies:
+      - PolicyName: LambdaFunctionPolicy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+              - s3:PutObject
+            Resource: '*'    
+ 
+  LambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.9
+      Timeout: 5
+      FunctionName:
+        Ref:  LambdaFuncName
+      Handler: lambdaFunction.lambda_handler
+      Role: !GetAtt LambdaFunctionRole.Arn
+      CodeUri: lambdaFunction.py
+
+  APIGatewayRestAPI:
+   Type: 'AWS::ApiGateway::RestApi'
+   Properties:
+     Name:
+       Ref: APIName
+   DependsOn:
+     - LambdaFunction
+
+  APIGatewayResource:
+   Type: 'AWS::ApiGateway::Resource'
+   Properties:
+     RestApiId: !Ref APIGatewayRestAPI
+     ParentId: !GetAtt
+       - APIGatewayRestAPI
+       - RootResourceId
+     PathPart:
+       Ref: LambdaFuncName
+   DependsOn:
+     - APIGatewayRestAPI
+
+  APIGatewayMethod:
+   Type: 'AWS::ApiGateway::Method'
+   Properties:
+     RestApiId: !Ref APIGatewayRestAPI
+     ResourceId: !Ref APIGatewayResource
+     HttpMethod: POST
+     AuthorizationType: NONE
+     MethodResponses:
+       - StatusCode: 200
+     Integration:
+       Type: AWS_PROXY
+       IntegrationResponses:
+         - StatusCode: 200
+       IntegrationHttpMethod: POST
+       Uri: !Sub
+         - >- 
+          arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFuncNameArn}/invocations
+         - LambdaFuncNameArn: !GetAtt LambdaFunction.Arn
+   DependsOn:
+     - APIGatewayResource
+
+  APIGatewayDeployment:
+   Type: 'AWS::ApiGateway::Deployment'
+   Properties:
+     RestApiId: !Ref APIGatewayRestAPI
+     StageName:
+       Ref: EnvironmentName
+   DependsOn:
+     - APIGatewayMethod
+
+  APIGatewayPermission:
+   Type: 'AWS::Lambda::Permission'
+   Properties:
+     Action: "lambda:InvokeFunction"
+     FunctionName: !GetAtt LambdaFunction.Arn
+     Principal: apigateway.amazonaws.com
+   DependsOn:
+    - APIGatewayDeployment
+      
+Outputs:
+  LambdaFunctionName:
+    Value: !Ref LambdaFunction
+
+  MainBucketName:
+    Description: Name of the main bucket
+    Value: !Ref MainBucket
