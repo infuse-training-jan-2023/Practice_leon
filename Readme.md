@@ -1,3 +1,4 @@
+
 Q1) Create an S3 bucket for storing logs 
 
     console
@@ -19,3 +20,6 @@ Q3)Create an API in API Gateway and link it to the above created lambda, so that
 
     add api gateway trigger.
     use url in postman.
+
+
+
