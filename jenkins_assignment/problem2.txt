@@ -1,0 +1,4 @@
+
+mkdir C:\\Users\\Leon\\Desktop\\Jenkins-node\\newdir
+cd C:\\Users\\Leon\\Desktop\\Jenkins-node\\newdir
+echo hello world > test.txt

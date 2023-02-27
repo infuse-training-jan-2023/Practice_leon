@@ -1,0 +1,19 @@
+pipeline {
+    agent jenkins-slave-Leon
+    stages {
+        stage('Build') { 
+            steps {
+                echo  "stage name: $env.STAGE_NAME" 
+            }
+        }
+        stage('Test') { 
+            steps {
+                  echo  "stage name: $env.STAGE_NAME" 
+
+            }
+        }
+       
+    }
+       
+}
+//H H * * 1-5
