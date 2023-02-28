@@ -140,3 +140,6 @@ Outputs:
   InvokeLogBucketName:
     Description: Name of the main bucket
     Value: !Ref  InvokeLogBucket
+
+  EndPointURL:
+    Value: !Sub "https://${APIGatewayRestAPI}.excute-api.${AWS::Region}.amazonaws.com/${EnvironmentName}"
