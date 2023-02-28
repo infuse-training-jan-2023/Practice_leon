@@ -12,19 +12,23 @@ Parameters:
 
   LambdaFuncName:
     Type: String
-    Default: Lambda_api-lambda-db
+    Default: Lambda_log-api-lambda
 
   APIName:
     Type: String
-    Default: API_api-lambda-db
+    Default: API_log-api-lambda
   EnvironmentName:
     Type: String
     Default: Prod
 
+  REQMethod:
+    Type: String
+    Default: GET
+
 
 Resources:
             
-  MainBucket:
+  InvokeLogBucket:
     Type: "AWS::S3::Bucket"
     Properties:
       BucketName: !Ref BucketName
@@ -33,7 +37,7 @@ Resources:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256
     
-  LambdaFunctionRole:
+  LambdaLogInvocationFunctionRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -47,7 +51,7 @@ Resources:
             - sts:AssumeRole
       Path: "/"
       Policies:
-      - PolicyName: LambdaFunctionPolicy
+      - PolicyName: LambdaFunctionWriteToS3Policy
         PolicyDocument:
           Version: '2012-10-17'
           Statement:
@@ -59,16 +63,16 @@ Resources:
               - s3:PutObject
             Resource: '*'    
  
-  LambdaFunction:
+  LambdaLogInvocationFunction:
     Type: AWS::Serverless::Function
     Properties:
       Runtime: python3.9
       Timeout: 5
       FunctionName:
         Ref:  LambdaFuncName
-      Handler: lambdaFunction.lambda_handler
-      Role: !GetAtt LambdaFunctionRole.Arn
-      CodeUri: lambdaFunction.py
+      Handler: lambda_function.lambda_handler
+      Role: !GetAtt  LambdaLogInvocationFunctionRole.Arn
+      CodeUri: lambda_function.py
 
   APIGatewayRestAPI:
    Type: 'AWS::ApiGateway::RestApi'
@@ -76,7 +80,7 @@ Resources:
      Name:
        Ref: APIName
    DependsOn:
-     - LambdaFunction
+     - LambdaLogInvocationFunction
 
   APIGatewayResource:
    Type: 'AWS::ApiGateway::Resource'
@@ -95,19 +99,17 @@ Resources:
    Properties:
      RestApiId: !Ref APIGatewayRestAPI
      ResourceId: !Ref APIGatewayResource
-     HttpMethod: POST
+     HttpMethod: !Ref REQMethod
      AuthorizationType: NONE
      MethodResponses:
        - StatusCode: 200
      Integration:
        Type: AWS_PROXY
-       IntegrationResponses:
-         - StatusCode: 200
        IntegrationHttpMethod: POST
        Uri: !Sub
          - >- 
           arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFuncNameArn}/invocations
-         - LambdaFuncNameArn: !GetAtt LambdaFunction.Arn
+         - LambdaFuncNameArn: !GetAtt LambdaLogInvocationFunction.Arn
    DependsOn:
      - APIGatewayResource
 
@@ -122,17 +124,19 @@ Resources:
 
   APIGatewayPermission:
    Type: 'AWS::Lambda::Permission'
+
    Properties:
      Action: "lambda:InvokeFunction"
-     FunctionName: !GetAtt LambdaFunction.Arn
+     FunctionName: !GetAtt LambdaLogInvocationFunction.Arn
      Principal: apigateway.amazonaws.com
+     SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${APIGatewayRestAPI}/${EnvironmentName}/${REQMethod}"
    DependsOn:
     - APIGatewayDeployment
       
 Outputs:
   LambdaFunctionName:
-    Value: !Ref LambdaFunction
+    Value: !Ref LambdaLogInvocationFunction
 
-  MainBucketName:
+  InvokeLogBucketName:
     Description: Name of the main bucket
-    Value: !Ref MainBucket
+    Value: !Ref  InvokeLogBucket
